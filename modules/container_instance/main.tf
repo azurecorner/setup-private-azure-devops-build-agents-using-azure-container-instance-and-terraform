@@ -4,13 +4,13 @@ resource "azurerm_container_group" "container_group" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   os_type             = "Linux"
-  ip_address_type             = "Private"
-  subnet_ids                  = [data.azurerm_subnet.subnet.id]
+  ip_address_type     = "Private"
+  subnet_ids          = [var.subnetId]
 
   identity {
     type = "UserAssigned"
     identity_ids = [
-      data.azurerm_user_assigned_identity.user_assigned_identity.id
+      var.user_assigned_identity_id
     ]
   }
 
@@ -27,7 +27,7 @@ resource "azurerm_container_group" "container_group" {
         protocol = "TCP"
       }
 
-     secure_environment_variables  = {
+      secure_environment_variables = {
         "AZP_URL"        = var.AZP_URL
         "AZP_TOKEN"      = var.AZP_TOKEN
         "AZP_POOL"       = container.value.AZP_POOL
@@ -37,13 +37,13 @@ resource "azurerm_container_group" "container_group" {
     }
   }
 
-    tags = (merge(var.tags, tomap({
-      type = "container_group"
+  tags = (merge(var.tags, tomap({
+    type = "container_group"
     })
   ))
 
   image_registry_credential {
     server                    = var.registryLoginServer
-    user_assigned_identity_id = data.azurerm_user_assigned_identity.user_assigned_identity.id
+    user_assigned_identity_id = var.user_assigned_identity_id # data.azurerm_user_assigned_identity.user_assigned_identity.id
   }
- }
+}

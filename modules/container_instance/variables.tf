@@ -1,23 +1,20 @@
 variable "resource_group_name" {
-  description = "Location of the resource group."
-
+  type = string
 }
 
 variable "resource_group_location" {
-  description = "Location of the resource group."
-
+  type = string
 }
 variable "tags" {
   type = map(string)
 }
 
-
 variable "containerGroupName" {
-
+  type = string
 }
 
 variable "registryLoginServer" {
-
+  type = string
 }
 variable "AZP_URL" {
   type = string
@@ -40,6 +37,11 @@ variable "containers" {
     AZP_POOL       = string
     AZP_AGENT_NAME = string
   }))
-
 }
- 
+
+variable "user_assigned_identity_id" {
+  type = string
+}
+variable "subnetId" {
+  type = string
+}

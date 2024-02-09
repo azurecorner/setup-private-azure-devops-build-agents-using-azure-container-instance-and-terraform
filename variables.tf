@@ -1,37 +1,38 @@
 variable "resource_group_name" {
-  description = "Location of the resource group."
-
+  type = string
 }
-
 variable "resource_group_location" {
-  description = "Location of the resource group."
-
+  type = string
 }
 variable "tags" {
   type = map(string)
 }
 
 variable "virtual_network_name" {
+  type = string
 }
 
 variable "virtual_network_address_space" {
+  type = string
 }
 
 variable "subnet_name" {
+  type = string
 }
 
 variable "subnet_address_space" {
+  type = string
 }
 variable "registryName" {
-
+  type = string
 }
 
 variable "containerGroupName" {
-
+  type = string
 }
 
 variable "registryLoginServer" {
-
+  type = string
 }
 variable "AZP_URL" {
   type = string

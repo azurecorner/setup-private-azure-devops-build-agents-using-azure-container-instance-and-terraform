@@ -12,8 +12,8 @@ virtual_network_address_space = "10.0.0.0/16"
 subnet_name                   = "inboundSubnet"
 subnet_address_space          = "10.0.0.0/24"
 registryName                  = "lortcslogcorner"
-containerGroupName      = "example-container"
-registryLoginServer     = "lortcslogcorner.azurecr.io"
+containerGroupName            = "example-container"
+registryLoginServer           = "lortcslogcorner.azurecr.io"
 
 containers = [
   {
@@ -44,3 +44,4 @@ containers = [
     AZP_AGENT_NAME = "DockerBuildAgent03"
   }
 ]
+

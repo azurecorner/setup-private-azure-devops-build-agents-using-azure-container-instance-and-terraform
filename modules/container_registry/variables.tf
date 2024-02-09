@@ -1,28 +1,18 @@
 variable "resource_group_name" {
-  description = "Location of the resource group."
-
+  type = string
 }
 
 variable "resource_group_location" {
-  description = "Location of the resource group."
-
+  type = string
 }
 variable "tags" {
   type = map(string)
 }
 
-variable "virtual_network_name" {
-}
-
-variable "virtual_network_address_space" {
-}
-
-variable "subnet_name" {
-}
-
-variable "subnet_address_space" {
-}
 variable "registryName" {
-
+  type = string
 }
 
+variable "user_assigned_identity_principal_id" {
+  type = string
+}
