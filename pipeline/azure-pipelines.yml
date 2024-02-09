@@ -1,0 +1,61 @@
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+variables:
+  - name: serviceConnectionName
+    value: 'tcs-datasynchro-iac-sp'
+  - name: backendAzureRmResourceGroupName
+    value: 'rg-datasynchro-iac'
+  - name: backendAzureRmResourceGroupLocation
+    value: 'westeurope'
+  - name: backendAzureRmStorageAccountName
+    value: 'iacstoragedatasynchrodev' 
+  - name: backendResourceContainerName
+    value: 'backend-tfstate-hub-ressources'
+  - name: BUILD_NUMBER
+    value: '$(Build.BuildId)'
+  - name : AZP_URL
+    value : 'https://dev.azure.com/logcornerworkshop'
+ 
+stages:
+  - template: templates/deploy_powershell.yml
+    parameters:
+      BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+      serviceConnectionName:  ${{ variables.serviceConnectionName }}
+      resourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
+      resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
+      workspace:  'dev' 
+      stageName: 'management'
+    
+ 
+  # - template: templates/deploy.yml
+  #   parameters:
+  #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+  #     serviceConnectionName:  ${{ variables.serviceConnectionName }}
+  #     backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
+  #     backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
+  #     backendResourceContainerName :  'backend-tfstate-hub-management'
+  #     workspace:  'dev' 
+  #     subfolder:   'iac/hub/management'
+  #     stageName: 'management'
+  #     VARS: '-var-file="dev.tfvars" '
+  # - template: templates/build.yml
+  #   parameters:
+  #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+  #     serviceConnectionName:  ${{ variables.serviceConnectionName }}
+  #     repository: 'lortcslogcorner'
+  #     imageName: 'dockeragent'
+  # - template: templates/deploy.yml
+    # parameters:
+    #   BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+    #   serviceConnectionName:  ${{ variables.serviceConnectionName }}
+    #   backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
+    #   backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
+    #   backendResourceContainerName :  'backend-tfstate-hub-devops'
+    #   workspace:  'dev' 
+    #   subfolder:   'iac/hub/devops'
+    #   stageName: 'devops'
+    #   VARS: '-var-file="dev.tfvars" -var "build_number=$(Build.BuildId)" -var "AZP_TOKEN=$(personalAccessToken)" -var "AZP_URL=${{ variables.AZP_URL }}"'

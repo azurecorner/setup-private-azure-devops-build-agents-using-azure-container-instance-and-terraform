@@ -1,0 +1,36 @@
+
+parameters:
+- name: BUILD_NUMBER
+- name: repository
+- name: serviceConnectionName
+- name: imageName
+
+stages:
+- stage: build
+  pool:
+    vmImage: ubuntu-latest
+  jobs:
+  - job: build_docker_and_push_image
+    steps:
+    - checkout: self
+    - task: Docker@2
+      enabled: true
+      displayName: Docker Build
+      inputs:
+        repository: '${{  parameters.repository }}'
+        command: 'build'
+        Dockerfile: '/**/dockeragent/Dockerfile'
+        arguments: '-t ${{  parameters.repository }}.azurecr.io/${{  parameters.imageName }}:${{  parameters.BUILD_NUMBER }}'
+
+    - task: AzureCLI@2
+      enabled: true
+      displayName: Docker Push
+      inputs:
+        azureSubscription: 'tcs-datasynchro-iac-sp'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          accessToken=$(az acr login --name ${{  parameters.repository }} --expose-token --output tsv --query accessToken)
+          echo $accessToken | docker login ${{  parameters.repository }}.azurecr.io --username 00000000-0000-0000-0000-000000000000 --password-stdin
+          docker push ${{  parameters.repository }}.azurecr.io/${{  parameters.imageName }}:${{  parameters.BUILD_NUMBER }}
+        

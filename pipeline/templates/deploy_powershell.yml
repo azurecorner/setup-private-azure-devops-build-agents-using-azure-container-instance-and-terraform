@@ -1,0 +1,32 @@
+
+parameters:
+- name: serviceConnectionName
+- name: resourceGroupName 
+- name: resourceGroupLocation
+- name: workspace
+- name: stageName
+
+stages:
+- stage: deploy_to_${{ parameters.stageName }}_environment 
+  displayName: deploy  to ${{ parameters.stageName }} environment
+  jobs:
+  - deployment: DeployScript
+    displayName: deploy 
+    pool:
+      vmImage: ubuntu-latest
+    # creates an environment if it doesn't exist
+    environment: ${{ parameters.workspace }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: AzurePowerShell@5
+            inputs:
+                azureSubscription: '${{  parameters.serviceConnectionName }}'
+                ScriptType: 'FilePath'
+                ScriptPath: 'powershell/resourceGroup.ps1'
+                ScriptArguments: '-resourceGroupName "${{ parameters.resourceGroupName }}" -resourceGroupLocation "${{ parameters.resourceGroupLocation }}"'
+                azurePowerShellVersion: 'LatestVersion'
+                workingDirectory: '$(System.DefaultWorkingDirectory)'
+      

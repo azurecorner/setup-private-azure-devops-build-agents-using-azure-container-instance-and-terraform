@@ -1,0 +1,81 @@
+
+parameters:
+- name: BUILD_NUMBER
+- name: serviceConnectionName
+- name: backendAzureRmResourceGroupName
+- name: backendAzureRmStorageAccountName
+- name: backendResourceContainerName
+- name: workspace
+- name: subfolder
+- name: stageName
+- name: VARS
+stages:
+- stage: deploy_to_${{ parameters.stageName }}_environment 
+  displayName: deploy  to ${{ parameters.stageName }} environment
+  jobs:
+  - deployment: DeployTerraform
+    displayName: deploy 
+    pool:
+      name: TCS-datasynchro-IAC
+    # creates an environment if it doesn't exist
+    environment: ${{ parameters.workspace }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          
+          - task: TerraformInstaller@0
+            displayName: Install Terraform 1.5.2
+            inputs:
+              terraformVersion: '1.5.2'
+          - task: TerraformTaskV2@2
+            enabled: true
+            displayName: Initialyze terraform 
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              commandOptions: ' ${{ parameters.VARS }} '
+              backendServiceArm: '${{  parameters.serviceConnectionName }}'
+              backendAzureRmResourceGroupName: '${{  parameters.backendAzureRmResourceGroupName }}'
+              backendAzureRmStorageAccountName: '${{  parameters.backendAzureRmStorageAccountName }}'
+              backendAzureRmContainerName: '${{  parameters.backendResourceContainerName }}'
+              backendAzureRmKey: 'terraform.tfstate'
+          
+          - task: AzurePowerShell@5
+            enabled: false
+            displayName: Create and(or) select workspace 
+            inputs:
+              azureSubscription: 'tcs-datasynchro-iac-sp'
+              ScriptType: 'InlineScript'
+              Inline: |
+                terraform workspace new ${{  parameters.workspace }} 
+                terraform workspace select ${{  parameters.workspace }}
+              azurePowerShellVersion: 'LatestVersion'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+          - task: TerraformTaskV2@2
+            enabled: true
+            displayName: Plan Terraform
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              commandOptions: ' ${{ parameters.VARS }} '
+              environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
+          - task: PowerShell@2
+            enabled: false
+            inputs:
+              targetType: 'inline'
+              script: 'terraform show -json tfplan >> tfplan.json'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+          - task: TerraformTaskV2@2
+            enabled: true
+            name: terraformApply
+            displayName: Apply Terraform
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              commandOptions: ' ${{ parameters.VARS }} '
+              environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
