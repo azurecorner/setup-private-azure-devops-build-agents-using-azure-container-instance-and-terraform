@@ -45,7 +45,7 @@ stages:
       workspace:  'dev' 
       stageName: 'container_registry'
       targetModule : 'module.container_registry'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" -var "AZP_POOL=none}" '
   - template: templates/docker_build.yml
     parameters:
       BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
