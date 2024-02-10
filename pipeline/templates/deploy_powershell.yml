@@ -1,4 +1,3 @@
-
 parameters:
 - name: serviceConnectionName
 - name: resourceGroupName 

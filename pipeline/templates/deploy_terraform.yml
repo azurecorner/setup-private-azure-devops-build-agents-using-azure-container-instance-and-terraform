@@ -1,12 +1,9 @@
-
 parameters:
-- name: BUILD_NUMBER
 - name: serviceConnectionName
 - name: backendAzureRmResourceGroupName
 - name: backendAzureRmStorageAccountName
 - name: backendResourceContainerName
 - name: workspace
-- name: subfolder
 - name: stageName
 - name: VARS
 stages:
@@ -35,40 +32,31 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: ' ${{ parameters.VARS }} '
               backendServiceArm: '${{  parameters.serviceConnectionName }}'
               backendAzureRmResourceGroupName: '${{  parameters.backendAzureRmResourceGroupName }}'
               backendAzureRmStorageAccountName: '${{  parameters.backendAzureRmStorageAccountName }}'
               backendAzureRmContainerName: '${{  parameters.backendResourceContainerName }}'
               backendAzureRmKey: 'terraform.tfstate'
-          
-          - task: AzurePowerShell@5
-            enabled: false
-            displayName: Create and(or) select workspace 
-            inputs:
-              azureSubscription: 'tcs-datasynchro-iac-sp'
-              ScriptType: 'InlineScript'
-              Inline: |
-                terraform workspace new ${{  parameters.workspace }} 
-                terraform workspace select ${{  parameters.workspace }}
-              azurePowerShellVersion: 'LatestVersion'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+        
           - task: TerraformTaskV2@2
             enabled: true
             displayName: Plan Terraform
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: ' ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
+          
           - task: PowerShell@2
-            enabled: false
+            enabled: true
             inputs:
               targetType: 'inline'
               script: 'terraform show -json tfplan >> tfplan.json'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+         
           - task: TerraformTaskV2@2
             enabled: true
             name: terraformApply
@@ -76,6 +64,6 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.subfolder }}'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: ' ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'

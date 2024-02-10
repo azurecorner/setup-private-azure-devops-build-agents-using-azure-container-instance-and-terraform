@@ -13,10 +13,10 @@ variables:
     value: 'westeurope'
   - name: backendAzureRmStorageAccountName
     value: 'stdatasynchroiac' 
-  # - name: backendResourceContainerName
-  #   value: 'backend-tfstate-hub-ressources'
-  # - name: BUILD_NUMBER
-  #   value: '$(Build.BuildId)'
+  - name: backendResourceContainerName
+    value: 'backend-tfstate-spokes'
+  - name: BUILD_NUMBER
+    value: '$(Build.BuildId)'
   # - name : AZP_URL
   #   value : 'https://dev.azure.com/logcornerworkshop'
  
@@ -28,20 +28,17 @@ stages:
       resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
       storageAccountName: ${{ variables.backendAzureRmStorageAccountName }} 
       workspace:  'dev' 
-      stageName: 'management'
-    
- 
-  # - template: templates/deploy.yml
-  #   parameters:
-  #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
-  #     serviceConnectionName:  ${{ variables.serviceConnectionName }}
-  #     backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
-  #     backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
-  #     backendResourceContainerName :  'backend-tfstate-hub-management'
-  #     workspace:  'dev' 
-  #     subfolder:   'iac/hub/management'
-  #     stageName: 'management'
-  #     VARS: '-var-file="dev.tfvars" '
+      stageName: 'hub'
+  
+  - template: templates/deploy_terraform.yml
+    parameters:
+      serviceConnectionName:  ${{ variables.serviceConnectionName }}
+      backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
+      backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
+      backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
+      workspace:  'dev' 
+      stageName: 'spoke'
+      VARS: '-var-file="dev.tfvars" '
   # - template: templates/build.yml
   #   parameters:
   #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
