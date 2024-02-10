@@ -28,7 +28,7 @@ stages:
       resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
       storageAccountName: ${{ variables.backendAzureRmStorageAccountName }} 
       workspace:  'dev' 
-      stageName: 'backend storage account'
+      stageName: 'backend_storage_account'
   
   - template: templates/deploy_terraform.yml
     parameters:
@@ -37,7 +37,7 @@ stages:
       backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
       backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
       workspace:  'dev' 
-      stageName: 'container registry'
+      stageName: 'container_registry'
       targetModule : 'module.container_registry'
       VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" '
   - template: templates/docker_build.yml
@@ -53,6 +53,6 @@ stages:
       backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
       backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
       workspace:  'dev' 
-      stageName: 'container instance'
+      stageName: 'container_instance'
       targetModule : 'module.container_instance'
       VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" '
