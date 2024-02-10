@@ -6,7 +6,7 @@ pool:
   vmImage: ubuntu-latest
 variables:
   - name: serviceConnectionName
-    value: 'tcs-datasynchro-iac-sp'
+    value: 'EVENT DRIVEN SP'
   - name: backendAzureRmResourceGroupName
     value: 'rg-datasynchro-iac'
   - name: backendAzureRmResourceGroupLocation
