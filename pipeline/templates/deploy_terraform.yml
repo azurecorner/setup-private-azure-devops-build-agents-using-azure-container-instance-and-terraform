@@ -5,6 +5,7 @@ parameters:
 - name: backendResourceContainerName
 - name: workspace
 - name: stageName
+- name: targetModule
 - name: VARS
 stages:
 - stage: deploy_to_${{ parameters.stageName }}_environment 
@@ -44,7 +45,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
-              commandOptions: ' ${{ parameters.VARS }} '
+              commandOptions: ' -target=${{ parameters.targetModule }}  ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
           
           - task: PowerShell@2
@@ -61,5 +62,5 @@ stages:
               provider: 'azurerm'
               command: 'apply'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
-              commandOptions: ' ${{ parameters.VARS }} '
+              commandOptions: ' -target=${{ parameters.targetModule }}  ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
