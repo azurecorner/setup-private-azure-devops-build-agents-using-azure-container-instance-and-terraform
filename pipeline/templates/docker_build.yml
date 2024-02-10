@@ -6,7 +6,7 @@ parameters:
 - name: imageName
 
 stages:
-- stage: build
+- stage: build and push
   pool:
     vmImage: ubuntu-latest
   jobs:

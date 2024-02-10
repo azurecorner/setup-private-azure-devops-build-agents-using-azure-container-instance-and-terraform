@@ -17,8 +17,8 @@ variables:
     value: 'backend-tfstate-spokes'
   - name: BUILD_NUMBER
     value: '$(Build.BuildId)'
-  # - name : AZP_URL
-  #   value : 'https://dev.azure.com/logcornerworkshop'
+  - name : AZP_URL
+    value : 'https://dev.azure.com/logcornerworkshop'
  
 stages:
   - template: templates/deploy_powershell.yml
@@ -28,7 +28,7 @@ stages:
       resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
       storageAccountName: ${{ variables.backendAzureRmStorageAccountName }} 
       workspace:  'dev' 
-      stageName: 'hub'
+      stageName: 'backend storage account'
   
   - template: templates/deploy_terraform.yml
     parameters:
@@ -37,7 +37,7 @@ stages:
       backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
       backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
       workspace:  'dev' 
-      stageName: 'spoke'
+      stageName: 'container registry'
       targetModule : 'module.container_registry'
       VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" '
   - template: templates/docker_build.yml
@@ -53,6 +53,6 @@ stages:
       backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
       backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
       workspace:  'dev' 
-      stageName: 'devops'
+      stageName: 'container instance'
       targetModule : 'module.container_instance'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=https://dev.azure.com/logcornerworkshop" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" '

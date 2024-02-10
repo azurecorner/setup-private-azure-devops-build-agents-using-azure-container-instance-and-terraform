@@ -8,8 +8,8 @@ parameters:
 - name: targetModule
 - name: VARS
 stages:
-- stage: deploy_to_${{ parameters.stageName }}_environment 
-  displayName: deploy  to ${{ parameters.stageName }} environment
+- stage: deploy_${{ parameters.stageName }}_stage
+  displayName: deploy ${{ parameters.stageName }} 
   jobs:
   - deployment: DeployTerraform
     displayName: deploy 

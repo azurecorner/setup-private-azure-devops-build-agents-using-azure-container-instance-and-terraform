@@ -7,17 +7,17 @@ tags = {
 resource_group_name     = "rg-datasynchro-spoke"
 resource_group_location = "West Europe"
 
-virtual_network_name          = "vnet-logicapp-demo"
+virtual_network_name          = "vnet-datasynchro"
 virtual_network_address_space = "10.0.0.0/16"
-subnet_name                   = "inboundSubnet"
+subnet_name                   = "devopsSubnet"
 subnet_address_space          = "10.0.0.0/24"
 registryName                  = "lortcslogcorner"
-containerGroupName            = "example-container"
+containerGroupName            = "devops-container"
 registryLoginServer           = "lortcslogcorner.azurecr.io"
 
 containers = [
   {
-    name           = "container1"
+    name           = "build-agent-01"
     image          = "lortcslogcorner.azurecr.io/dockeragent"
     port           = 80
     cpuCores       = 1
@@ -26,7 +26,7 @@ containers = [
     AZP_AGENT_NAME = "DockerBuildAgent01"
   },
   {
-    name           = "container2"
+    name           = "build-agent-02"
     image          = "lortcslogcorner.azurecr.io/dockeragent"
     port           = 82
     cpuCores       = 1
@@ -35,7 +35,7 @@ containers = [
     AZP_AGENT_NAME = "DockerBuildAgent02"
   },
   {
-    name           = "container3"
+    name           = "build-agent-03"
     image          = "lortcslogcorner.azurecr.io/dockeragent"
     port           = 81
     cpuCores       = 1
