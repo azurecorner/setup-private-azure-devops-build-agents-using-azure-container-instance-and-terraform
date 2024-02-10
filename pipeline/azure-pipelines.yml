@@ -39,21 +39,21 @@ stages:
       workspace:  'dev' 
       stageName: 'spoke'
       targetModule : 'module.container_registry'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=xxxxxa" -var "AZP_URL=https://dev.azure.com/logcornerworkshop" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" '
   - template: templates/docker_build.yml
     parameters:
       BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
       repository: 'lortcslogcorner'
       imageName: 'dockeragent'
-  # - template: templates/deploy.yml
-    # parameters:
-    #   BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
-    #   serviceConnectionName:  ${{ variables.serviceConnectionName }}
-    #   backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
-    #   backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
-    #   backendResourceContainerName :  'backend-tfstate-hub-devops'
-    #   workspace:  'dev' 
-    #   subfolder:   'iac/hub/devops'
-    #   stageName: 'devops'
-    #   VARS: '-var-file="dev.tfvars" -var "build_number=$(Build.BuildId)" -var "AZP_TOKEN=$(personalAccessToken)" -var "AZP_URL=${{ variables.AZP_URL }}"'
+  - template: templates/deploy_terraform.yml
+    parameters:
+      BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+      serviceConnectionName:  ${{ variables.serviceConnectionName }}
+      backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
+      backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
+      backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
+      workspace:  'dev' 
+      stageName: 'devops'
+      targetModule : 'module.container_instance'
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=https://dev.azure.com/logcornerworkshop" '
