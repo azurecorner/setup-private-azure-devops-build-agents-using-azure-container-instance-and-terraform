@@ -1,4 +1,3 @@
-
 Param
 (
     [Parameter(Mandatory=$true, HelpMessage = "Please provide a valid resource group")]
@@ -23,9 +22,9 @@ $StorageHT = @{
     Name              =  $storageAccountName 
     SkuName           =  $storageAccountSku
     Location          =  $resourceGroupLocation
+    AllowBlobPublicAccess = $true
     Tags              = $resourceGroupTags
   }
-
 
 Write-Host -ForegroundColor Green "*************** Creating storage account.. ***************"  
 ## Get the storage account in which container has to be created  
@@ -38,26 +37,23 @@ if(!$storageAcc){
     ## Get the storage account context  
     $ctx=$storageAcc.Context      
     Write-Host -ForegroundColor Green "*************** Creating storage container.. ***************"  
-
-
-        ## Check if the storage container exists  
-        if(Get-AzStorageContainer -Name $storageSpokeContainerName -Context $ctx -ErrorAction SilentlyContinue)  
-        {  
-            Write-Host -ForegroundColor Yellow $storageSpokeContainerName "- container already exists."  
-            Write-Host  -ForegroundColor Magenta "using storage container $storageSpokeContainerName on location $location "
-        }  
-        else  
-        {  
-            Write-Host -ForegroundColor Magenta $storageSpokeContainerName "- container does not exist."   
-            ## Create a new Azure Storage Account  
-            New-AzStorageContainer -Name $storageSpokeContainerName -Context $ctx -Permission Container  
-            Write-Host -ForegroundColor Green " $storageSpokeContainerName created succesfully at location $location"
-        }
+    ## Check if the storage container exists  
+    if(Get-AzStorageContainer -Name $storageSpokeContainerName -Context $ctx -ErrorAction SilentlyContinue)  
+    {  
+        Write-Host -ForegroundColor Yellow $storageSpokeContainerName "- container already exists."  
+        Write-Host  -ForegroundColor Magenta "using storage container $storageSpokeContainerName on location $location "
+    }  
+    else  
+    {  
+        Write-Host -ForegroundColor Magenta $storageSpokeContainerName "- container does not exist."   
+        ## Create a new Azure Storage Account  
+        New-AzStorageContainer -Name $storageSpokeContainerName -Context $ctx -Permission Container  
+        Write-Host -ForegroundColor Green " $storageSpokeContainerName created succesfully at location $location"
     }
-    
-    else {
-        Write-Host -ForegroundColor Yellow "storage account already  exist"
-        Write-Host  -ForegroundColor Magenta "using storage account $storageAccountName on location $resourceGroupLocation  "
-    }
+}
+else {
+    Write-Host -ForegroundColor Yellow "storage account already  exist"
+    Write-Host  -ForegroundColor Magenta "using storage account $storageAccountName on location $resourceGroupLocation  "
+}
 
    
