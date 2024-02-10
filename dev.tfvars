@@ -4,7 +4,7 @@ tags = {
   deployed_by = "terraform"
 }
 
-resource_group_name     = "rg-datasynchro-dev"
+resource_group_name     = "rg-datasynchro-spoke"
 resource_group_location = "West Europe"
 
 virtual_network_name          = "vnet-logicapp-demo"
