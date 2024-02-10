@@ -22,9 +22,9 @@ stages:
           steps:
           - checkout: self
           - task: TerraformInstaller@0
-            displayName: Install Terraform 1.5.2
+            displayName: Install Terraform 1.7.3
             inputs:
-              terraformVersion: '1.5.2'
+              terraformVersion: '1.7.3'
           - task: TerraformTaskV2@2
             displayName: Initialyze terraform 
             inputs:

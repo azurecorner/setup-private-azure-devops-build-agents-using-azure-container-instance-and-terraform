@@ -38,7 +38,7 @@ stages:
       backendResourceContainerName :  ${{ variables.backendResourceContainerName }}
       workspace:  'dev' 
       stageName: 'spoke'
-      VARS: '-var-file="dev.tfvars" '
+      VARS: '-var-file="dev.tfvars" -var "${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=xxxxxa" -var "AZP_URL=https://dev.azure.com/logcornerworkshop" '
   # - template: templates/build.yml
   #   parameters:
   #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
