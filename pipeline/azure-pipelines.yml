@@ -23,7 +23,6 @@ variables:
 stages:
   - template: templates/deploy_powershell.yml
     parameters:
-      BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
       resourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
       resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
