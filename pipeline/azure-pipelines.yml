@@ -15,6 +15,10 @@ variables:
     value: 'stdatasynchroiac' 
   - name: backendResourceContainerName
     value: 'backend-tfstate-spokes'
+  - name: repositoryName
+    value: 'lortcslogcorner'
+  - name: imageName
+    value: 'dockeragent'
   - name: BUILD_NUMBER
     value: '$(Build.BuildId)'
   - name : AZP_URL
@@ -44,8 +48,8 @@ stages:
     parameters:
       BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
-      repository: 'lortcslogcorner'
-      imageName: 'dockeragent'
+      repository: ${{ variables.repositoryName }}
+      imageName: ${{ variables.imageName }}
   - template: templates/deploy_terraform.yml
     parameters:
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
