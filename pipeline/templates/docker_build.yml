@@ -26,7 +26,7 @@ stages:
       enabled: true
       displayName: Docker Push
       inputs:
-        azureSubscription: 'tcs-datasynchro-iac-sp'
+        azureSubscription: '${{  parameters.serviceConnectionName }}'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
