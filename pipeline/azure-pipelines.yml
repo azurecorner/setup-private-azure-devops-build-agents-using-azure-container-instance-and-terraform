@@ -23,6 +23,8 @@ variables:
     value: '$(Build.BuildId)'
   - name : AZP_URL
     value : 'https://dev.azure.com/logcornerworkshop'
+  - name: AZP_POOL
+    value: 'DOCKER-AGENTS'
  
 stages:
   - template: templates/deploy_powershell.yml
@@ -59,4 +61,4 @@ stages:
       workspace:  'dev' 
       stageName: 'container_instance'
       targetModule : 'module.container_instance'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" -var "AZP_POOL=${{ variables.AZP_POOL }}"'

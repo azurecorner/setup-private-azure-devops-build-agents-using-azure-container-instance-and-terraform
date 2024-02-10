@@ -31,14 +31,15 @@ variable "containerGroupName" {
   type = string
 }
 
-# variable "registryLoginServer" {
-#   type = string
-# }
 variable "AZP_URL" {
   type = string
 }
 
 variable "AZP_TOKEN" {
+  type = string
+}
+
+variable "AZP_POOL" {
   type = string
 }
 variable "build_number" {

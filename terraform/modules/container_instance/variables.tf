@@ -23,6 +23,10 @@ variable "AZP_URL" {
 variable "AZP_TOKEN" {
   type = string
 }
+
+variable "AZP_POOL" {
+   type = string
+}
 variable "build_number" {
   type = string
 }

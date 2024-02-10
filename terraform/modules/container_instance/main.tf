@@ -30,7 +30,7 @@ resource "azurerm_container_group" "container_group" {
       secure_environment_variables = {
         "AZP_URL"        = var.AZP_URL
         "AZP_TOKEN"      = var.AZP_TOKEN
-        "AZP_POOL"       = container.value.AZP_POOL
+        "AZP_POOL"       = var.AZP_POOL
         "AZP_AGENT_NAME" = container.value.AZP_AGENT_NAME
       }
 
