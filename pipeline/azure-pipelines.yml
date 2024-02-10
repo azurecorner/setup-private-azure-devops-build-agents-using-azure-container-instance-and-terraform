@@ -48,7 +48,6 @@ stages:
       imageName: 'dockeragent'
   - template: templates/deploy_terraform.yml
     parameters:
-      BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
       backendAzureRmResourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
       backendAzureRmStorageAccountName:  ${{ variables.backendAzureRmStorageAccountName }} 
