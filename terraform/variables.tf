@@ -31,9 +31,9 @@ variable "containerGroupName" {
   type = string
 }
 
-variable "registryLoginServer" {
-  type = string
-}
+# variable "registryLoginServer" {
+#   type = string
+# }
 variable "AZP_URL" {
   type = string
 }

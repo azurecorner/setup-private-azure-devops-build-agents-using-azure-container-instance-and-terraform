@@ -18,7 +18,7 @@ resource "azurerm_container_group" "container_group" {
     for_each = var.containers
     content {
       name   = container.value.name
-      image  = "${container.value.image}:${var.build_number}"
+      image  = "${var.registryLoginServer}/${container.value.image}:${var.build_number}"
       cpu    = container.value.cpuCores
       memory = container.value.memoryInGb
 
@@ -44,6 +44,6 @@ resource "azurerm_container_group" "container_group" {
 
   image_registry_credential {
     server                    = var.registryLoginServer
-    user_assigned_identity_id = var.user_assigned_identity_id # data.azurerm_user_assigned_identity.user_assigned_identity.id
+    user_assigned_identity_id = var.user_assigned_identity_id 
   }
 }
