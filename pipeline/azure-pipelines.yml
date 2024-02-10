@@ -12,13 +12,13 @@ variables:
   - name: backendAzureRmResourceGroupLocation
     value: 'westeurope'
   - name: backendAzureRmStorageAccountName
-    value: 'iacstoragedatasynchrodev' 
-  - name: backendResourceContainerName
-    value: 'backend-tfstate-hub-ressources'
-  - name: BUILD_NUMBER
-    value: '$(Build.BuildId)'
-  - name : AZP_URL
-    value : 'https://dev.azure.com/logcornerworkshop'
+    value: 'stdatasynchroiac' 
+  # - name: backendResourceContainerName
+  #   value: 'backend-tfstate-hub-ressources'
+  # - name: BUILD_NUMBER
+  #   value: '$(Build.BuildId)'
+  # - name : AZP_URL
+  #   value : 'https://dev.azure.com/logcornerworkshop'
  
 stages:
   - template: templates/deploy_powershell.yml
@@ -27,6 +27,7 @@ stages:
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
       resourceGroupName:  ${{ variables.backendAzureRmResourceGroupName }}
       resourceGroupLocation:  ${{ variables.backendAzureRmResourceGroupLocation }} 
+      storageAccountName: ${{ variables.backendAzureRmStorageAccountName }} 
       workspace:  'dev' 
       stageName: 'management'
     

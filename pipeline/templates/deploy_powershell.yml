@@ -3,6 +3,7 @@ parameters:
 - name: serviceConnectionName
 - name: resourceGroupName 
 - name: resourceGroupLocation
+- name: storageAccountName
 - name: workspace
 - name: stageName
 
@@ -22,11 +23,21 @@ stages:
           steps:
           - checkout: self
           - task: AzurePowerShell@5
+            displayName: Deploy Resource Group
             inputs:
                 azureSubscription: '${{  parameters.serviceConnectionName }}'
                 ScriptType: 'FilePath'
                 ScriptPath: 'powershell/resourceGroup.ps1'
                 ScriptArguments: '-resourceGroupName "${{ parameters.resourceGroupName }}" -resourceGroupLocation "${{ parameters.resourceGroupLocation }}"'
+                azurePowerShellVersion: 'LatestVersion'
+                workingDirectory: '$(System.DefaultWorkingDirectory)'
+          - task: AzurePowerShell@5
+            displayName: Deploy Backend Storage Account
+            inputs:
+                azureSubscription: '${{  parameters.serviceConnectionName }}'
+                ScriptType: 'FilePath'
+                ScriptPath: 'powershell/storageAccount.ps1'
+                ScriptArguments: '-resourceGroupName "${{ parameters.resourceGroupName }}" -resourceGroupLocation "${{ parameters.resourceGroupLocation }}" -storageAccountName "${{ parameters.storageAccountName }}"'
                 azurePowerShellVersion: 'LatestVersion'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
       

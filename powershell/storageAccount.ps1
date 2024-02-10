@@ -6,15 +6,13 @@ Param
     [Parameter(Mandatory=$true, HelpMessage = "Please provide a valid location")]
     [string]$resourceGroupLocation,
     [Parameter(Mandatory=$true, HelpMessage = "Please provide a valid storageAccountName")]
-    [string]$storageAccountName,
-    [Parameter(Mandatory=$true, HelpMessage = "Please provide a valid virtualNetworkName")]
-    [string]$environment
+    [string]$storageAccountName
  )
 
 $application ='datasynchro';
 
 $resourceGroupTags = @{"application"="$application"; 
-                       "environment"="$environment"}
+                       "environment"="dev"}
 
 $storageAccountSku="Standard_LRS"
 
