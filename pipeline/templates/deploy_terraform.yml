@@ -13,7 +13,7 @@ stages:
   - deployment: DeployTerraform
     displayName: deploy 
     pool:
-      name: TCS-datasynchro-IAC
+      vmImage: ubuntu-latest
     # creates an environment if it doesn't exist
     environment: ${{ parameters.workspace }}
     strategy:
@@ -21,13 +21,11 @@ stages:
         deploy:
           steps:
           - checkout: self
-          
           - task: TerraformInstaller@0
             displayName: Install Terraform 1.5.2
             inputs:
               terraformVersion: '1.5.2'
           - task: TerraformTaskV2@2
-            enabled: true
             displayName: Initialyze terraform 
             inputs:
               provider: 'azurerm'
@@ -41,7 +39,6 @@ stages:
               backendAzureRmKey: 'terraform.tfstate'
         
           - task: TerraformTaskV2@2
-            enabled: true
             displayName: Plan Terraform
             inputs:
               provider: 'azurerm'
@@ -51,14 +48,12 @@ stages:
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
           
           - task: PowerShell@2
-            enabled: true
-            inputs:
+              inputs:
               targetType: 'inline'
               script: 'terraform show -json tfplan >> tfplan.json'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
          
           - task: TerraformTaskV2@2
-            enabled: true
             name: terraformApply
             displayName: Apply Terraform
             inputs:
