@@ -40,12 +40,12 @@ stages:
       stageName: 'spoke'
       targetModule : 'module.container_registry'
       VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=xxxxxa" -var "AZP_URL=https://dev.azure.com/logcornerworkshop" '
-  # - template: templates/build.yml
-  #   parameters:
-  #     BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
-  #     serviceConnectionName:  ${{ variables.serviceConnectionName }}
-  #     repository: 'lortcslogcorner'
-  #     imageName: 'dockeragent'
+  - template: templates/docker_build.yml
+    parameters:
+      BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
+      serviceConnectionName:  ${{ variables.serviceConnectionName }}
+      repository: 'lortcslogcorner'
+      imageName: 'dockeragent'
   # - template: templates/deploy.yml
     # parameters:
     #   BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
