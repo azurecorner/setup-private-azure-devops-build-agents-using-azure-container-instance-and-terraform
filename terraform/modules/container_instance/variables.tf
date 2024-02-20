@@ -1,30 +1,12 @@
 variable "resource_group_name" {
   type = string
 }
+
 variable "resource_group_location" {
   type = string
 }
 variable "tags" {
   type = map(string)
-}
-
-variable "virtual_network_name" {
-  type = string
-}
-
-variable "virtual_network_address_space" {
-  type = string
-}
-
-variable "subnet_name" {
-  type = string
-}
-
-variable "subnet_address_space" {
-  type = string
-}
-variable "registryName" {
-  type = string
 }
 
 variable "containerGroupName" {
@@ -41,6 +23,10 @@ variable "AZP_URL" {
 variable "AZP_TOKEN" {
   type = string
 }
+
+variable "AZP_POOL" {
+   type = string
+}
 variable "build_number" {
   type = string
 }
@@ -55,6 +41,11 @@ variable "containers" {
     AZP_POOL       = string
     AZP_AGENT_NAME = string
   }))
-
 }
- 
+
+variable "user_assigned_identity_id" {
+  type = string
+}
+variable "subnetId" {
+  type = string
+}

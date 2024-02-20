@@ -61,7 +61,8 @@ module "container_instance" {
   resource_group_location   = var.resource_group_location
   containerGroupName        = var.containerGroupName
   build_number              = var.build_number
-  registryLoginServer       = var.registryLoginServer
+  registryLoginServer       = module.container_registry.container_registryç_login_server
+  AZP_POOL                  = var.AZP_POOL
   AZP_URL                   = var.AZP_URL
   AZP_TOKEN                 = var.AZP_TOKEN
   containers                = var.containers

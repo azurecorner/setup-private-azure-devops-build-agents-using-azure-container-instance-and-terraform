@@ -18,7 +18,7 @@ resource "azurerm_container_group" "container_group" {
     for_each = var.containers
     content {
       name   = container.value.name
-      image  = "${container.value.image}:${var.build_number}"
+      image  = "${var.registryLoginServer}/${container.value.image}:${var.build_number}"
       cpu    = container.value.cpuCores
       memory = container.value.memoryInGb
 
@@ -30,7 +30,7 @@ resource "azurerm_container_group" "container_group" {
       secure_environment_variables = {
         "AZP_URL"        = var.AZP_URL
         "AZP_TOKEN"      = var.AZP_TOKEN
-        "AZP_POOL"       = container.value.AZP_POOL
+        "AZP_POOL"       = var.AZP_POOL
         "AZP_AGENT_NAME" = container.value.AZP_AGENT_NAME
       }
 

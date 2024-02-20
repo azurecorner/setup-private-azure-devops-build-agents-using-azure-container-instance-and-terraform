@@ -31,7 +31,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               commandOptions: ' ${{ parameters.VARS }} '
               backendServiceArm: '${{  parameters.serviceConnectionName }}'
               backendAzureRmResourceGroupName: '${{  parameters.backendAzureRmResourceGroupName }}'
@@ -44,7 +44,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               commandOptions: ' -target=${{ parameters.targetModule }}  ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'
           
@@ -61,6 +61,6 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               commandOptions: ' -target=${{ parameters.targetModule }}  ${{ parameters.VARS }} '
               environmentServiceNameAzureRM: '${{  parameters.serviceConnectionName }}'

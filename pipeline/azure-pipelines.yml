@@ -15,10 +15,16 @@ variables:
     value: 'stdatasynchroiac' 
   - name: backendResourceContainerName
     value: 'backend-tfstate-spokes'
+  - name: repositoryName
+    value: 'lortcslogcorner'
+  - name: imageName
+    value: 'dockeragent'
   - name: BUILD_NUMBER
     value: '$(Build.BuildId)'
   - name : AZP_URL
     value : 'https://dev.azure.com/logcornerworkshop'
+  - name: AZP_POOL
+    value: 'DOCKER-AGENTS'
  
 stages:
   - template: templates/deploy_powershell.yml
@@ -39,13 +45,13 @@ stages:
       workspace:  'dev' 
       stageName: 'container_registry'
       targetModule : 'module.container_registry'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=none" -var "AZP_URL=none" -var "AZP_POOL=none}" '
   - template: templates/docker_build.yml
     parameters:
       BUILD_NUMBER:  ${{ variables.BUILD_NUMBER }}
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
-      repository: 'lortcslogcorner'
-      imageName: 'dockeragent'
+      repository: ${{ variables.repositoryName }}
+      imageName: ${{ variables.imageName }}
   - template: templates/deploy_terraform.yml
     parameters:
       serviceConnectionName:  ${{ variables.serviceConnectionName }}
@@ -55,4 +61,4 @@ stages:
       workspace:  'dev' 
       stageName: 'container_instance'
       targetModule : 'module.container_instance'
-      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" '
+      VARS: '-var-file="dev.tfvars" -var "build_number=${{ variables.BUILD_NUMBER }}" -var "AZP_TOKEN=$(AZP_TOKEN)" -var "AZP_URL=${{ variables.AZP_URL }}" -var "AZP_POOL=${{ variables.AZP_POOL }}"'

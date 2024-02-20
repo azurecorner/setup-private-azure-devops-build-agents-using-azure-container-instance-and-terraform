@@ -13,12 +13,12 @@ subnet_name                   = "devopsSubnet"
 subnet_address_space          = "10.0.0.0/24"
 registryName                  = "lortcslogcorner"
 containerGroupName            = "devops-container"
-registryLoginServer           = "lortcslogcorner.azurecr.io"
+
 
 containers = [
   {
     name           = "build-agent-01"
-    image          = "lortcslogcorner.azurecr.io/dockeragent"
+    image          = "dockeragent"
     port           = 80
     cpuCores       = 1
     memoryInGb     = 2
@@ -27,7 +27,7 @@ containers = [
   },
   {
     name           = "build-agent-02"
-    image          = "lortcslogcorner.azurecr.io/dockeragent"
+    image          = "dockeragent"
     port           = 82
     cpuCores       = 1
     memoryInGb     = 2
@@ -36,7 +36,7 @@ containers = [
   },
   {
     name           = "build-agent-03"
-    image          = "lortcslogcorner.azurecr.io/dockeragent"
+    image          = "dockeragent"
     port           = 81
     cpuCores       = 1
     memoryInGb     = 2
