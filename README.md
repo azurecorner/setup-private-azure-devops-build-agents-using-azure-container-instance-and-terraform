@@ -8,9 +8,9 @@ docker push lortcslogcorner.azurecr.io/dockeragent
 
 terraform apply -var-file="dev.tfvars"  --auto-approve
 
-terraform plan  -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN=hgmscqc65n7pwtctzlwiya" -var "AZP_URL=https://dev.azure.com/logcornerworkshop"
+terraform plan  -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN={{your_token}}" -var "AZP_URL=https://dev.azure.com/{{your_organization}}"
 
-terraform apply -target="module.container_registry" -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN=xxxxxxxxxxxxxxxxxxxx" -var "AZP_URL=https://dev.azure.com/logcornerworkshop"   --auto-approve
+terraform apply -target="module.container_registry" -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN={{your_token}}" -var "AZP_URL=https://dev.azure.com/{{your_organization}}"   --auto-approve
 
 
-terraform apply -target="module.container_instance" -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN=xxxxxxxxxxxxx" -var "AZP_URL=https://dev.azure.com/logcornerworkshop"   --auto-approve
+terraform apply -target="module.container_instance" -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN={{your_token}}" -var "AZP_URL=https://dev.azure.com/{{your_organization}}"   --auto-approve

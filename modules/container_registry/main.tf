@@ -15,7 +15,7 @@ resource "azurerm_container_registry" "container_registry" {
 resource "azurerm_role_assignment" "role_assignment" {
   scope                = azurerm_container_registry.container_registry.id
   role_definition_name = "acrpull"
-  principal_id         = var.user_assigned_identity_principal_id # azurerm_user_assigned_identity.user_assigned_identity.principal_id
+  principal_id         = var.user_assigned_identity_principal_id 
 
   depends_on = [azurerm_container_registry.container_registry]
 }

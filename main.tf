@@ -17,7 +17,6 @@ resource "azurerm_subnet" "devops_subnet" {
   address_prefixes     = [var.subnet_address_space]
   name                 = var.subnet_name
   resource_group_name  = var.resource_group_name
-  service_endpoints    = ["Microsoft.Storage"]
   virtual_network_name = azurerm_virtual_network.virtual_network.name
   delegation {
     name = "delegation"

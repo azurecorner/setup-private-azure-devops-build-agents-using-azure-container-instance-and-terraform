@@ -44,6 +44,6 @@ resource "azurerm_container_group" "container_group" {
 
   image_registry_credential {
     server                    = var.registryLoginServer
-    user_assigned_identity_id = var.user_assigned_identity_id # data.azurerm_user_assigned_identity.user_assigned_identity.id
+    user_assigned_identity_id = var.user_assigned_identity_id 
   }
 }
