@@ -33,17 +33,21 @@ variable "containerGroupName" {
 
 variable "AZP_URL" {
   type = string
+    default = null
 }
 
 variable "AZP_TOKEN" {
   type = string
+  default = null
 }
 
 variable "AZP_POOL" {
   type = string
+    default = null
 }
 variable "build_number" {
   type = string
+    default = null
 }
 
 variable "containers" {
