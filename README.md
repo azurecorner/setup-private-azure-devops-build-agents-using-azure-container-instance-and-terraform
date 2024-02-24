@@ -32,4 +32,17 @@ docker build . -t "${registryName}.azurecr.io/${imageName}:${tag}"
 
 docker push "${registryName}.azurecr.io/${imageName}:${tag}" 
 
-terraform plan  -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN={{your_token}}" -var "AZP_URL=https://dev.azure.com/{{your_organization}}"
+# deploy container instance
+$devopsOrg="https://dev.azure.com/logcornerworkshop"
+$personalAccessToken=""
+$poolName="DOCKER-AGENTS"
+
+terraform plan -target="module.container_instance" -var-file="dev.tfvars" -var "build_number=$tag" -var "AZP_TOKEN=$personalAccessToken" -var "AZP_URL=$devopsOrg"   -var "AZP_POOL=$poolName"
+
+terraform apply -target="module.container_instance" -var-file="dev.tfvars" -var "build_number=$tag" -var "AZP_TOKEN=$personalAccessToken" -var "AZP_URL=$devopsOrg"    -var "AZP_POOL=$poolName" --auto-approve
+
+$resourceGroupName="rg-datasynchro-iac"
+$containerName="devops-container"
+az container logs --resource-group $resourceGroupName --name $containerName
+az container attach --resource-group $resourceGroupName --name $containerName
+az container show --resource-group $resourceGroupName --name $containerName
