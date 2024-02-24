@@ -23,7 +23,13 @@ terraform plan -target="module.container_registry" -var-file="dev.tfvars"
 terraform apply -target="module.container_registry" -var-file="dev.tfvars" --auto-approve
 
 #  docker build and push
+$registryName="lortcslogcorner"
+$tag="1.0.2"
+$imageName="dockeragent"
+az acr login --name  $registryName
 
-az acr login --name  lortcslogcorner
+docker build . -t "${registryName}.azurecr.io/${imageName}:${tag}"
+
+docker push "${registryName}.azurecr.io/${imageName}:${tag}" 
 
 terraform plan  -var-file="dev.tfvars" -var "build_number=1.0.0" -var "AZP_TOKEN={{your_token}}" -var "AZP_URL=https://dev.azure.com/{{your_organization}}"
